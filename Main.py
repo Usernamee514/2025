@@ -53,7 +53,7 @@ mbti_jobs = {
 }
 
 # 🌟 타이틀
-st.markdown('<div class="title">🌟 MBTI 기반 직업 추천 사이트 💼✨</div>', unsafe_allow_html=True)
+st.markdown('<div class="title">🌟 MBTI 기반 직업 추천 사이트 ✨</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">당신의 MBTI에 딱 맞는 직업을 추천해드립니다! 🚀</div>', unsafe_allow_html=True)
 
 # 📌 MBTI 선택
