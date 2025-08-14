@@ -1,7 +1,7 @@
 import streamlit as st
 
 # 🎨 페이지 설정
-st.set_page_config(page_title="🌟 MBTI 직업 추천", page_icon="💼", layout="centered")
+st.set_page_config(page_title="🌟 MBTI 직업 추천 사이트 🌟", page_icon="💼", layout="centered")
 
 # 🌈 스타일 커스터마이징
 st.markdown("""
