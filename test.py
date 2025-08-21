@@ -1,72 +1,42 @@
 import streamlit as st
 
-# -----------------------------
-# 페이지 설정 & 간단 스타일
-# -----------------------------
-st.set_page_config(
-    page_title="🍱 FoodStorageAdvisor — 음식 보관 추천",
-    page_icon="🥕",
-    layout="wide",
-)
+st.set_page_config(page_title="음식 보관법 추천", page_icon="🍱")
 
-st.title("🍱 FoodStorageAdvisor")
-st.caption("카테고리를 선택하면 보관 온도·기간·유의사항을 추천합니다.")
+# 세션 상태 초기화
+if "page" not in st.session_state:
+    st.session_state.page = "select"   # 처음은 선택 페이지
+if "choice" not in st.session_state:
+    st.session_state.choice = None
 
-# -----------------------------
-# 카테고리별 권장 보관 정보
-# -----------------------------
-CATEGORY_STORAGE = {
-    "유제품": {
-        "보관 장소": "냉장 (0–4℃)",
-        "권장 기간": "1주 이내 (우유는 개봉 후 3일, 요거트는 3–5일)",
-        "주의사항": ["문 선반 대신 내부 선반에 보관", "개봉 후 즉시 밀봉"]
-    },
-    "육류": {
-        "보관 장소": "냉장 (0–2℃) 또는 냉동 (-18℃ 이하)",
-        "권장 기간": "냉장 1–2일, 냉동 최대 9개월",
-        "주의사항": ["교차 오염 주의", "소분 포장 후 급속 냉동"]
-    },
-    "난류": {
-        "보관 장소": "냉장 (0–4℃)",
-        "권장 기간": "3–5주",
-        "주의사항": ["큰쪽(공기주머니)을 위로", "세척하지 말고 보관"]
-    },
-    "곡류": {
-        "보관 장소": "실온 또는 냉동",
-        "권장 기간": "밥: 냉장 1–2일/냉동 1개월, 빵: 실온 2–3일/냉동 2–3개월",
-        "주의사항": ["고온다습 피하기", "소분 후 냉동"]
-    },
-    "과일": {
-        "보관 장소": "품목별 다름 (사과: 냉장, 바나나: 실온 등)",
-        "권장 기간": "2–7일 (딸기·베리류) ~ 수주 (사과)",
-        "주의사항": ["에틸렌 방출 과일과 민감 과일 분리", "먹기 직전 세척"]
-    },
-    "채소": {
-        "보관 장소": "냉장 (0–10℃, 품목별 상이)",
-        "권장 기간": "잎채소 3–5일, 뿌리채소 수주–수개월",
-        "주의사항": ["통풍 유지", "수분 조절 (키친타월 사용)"]
-    },
-    "수산물": {
-        "보관 장소": "냉장 (0–2℃) 또는 냉동 (-18℃ 이하)",
-        "권장 기간": "냉장 1–2일, 냉동 3–6개월",
-        "주의사항": ["해동 후 재냉동 금지", "비린내 억제를 위해 밀폐"]
-    }
+# 보관 방법 딕셔너리
+storage_tips = {
+    "수산물": "❄️ 냉장 보관 (0~5℃) 권장, 바로 먹지 않을 경우 냉동 보관.\n👉 밀폐용기 또는 진공 포장하면 신선도 유지!",
+    "육류": "🥩 냉장 보관은 0~4℃, 장기 보관 시 -18℃ 이하 냉동.\n👉 포장 그대로 두거나 랩으로 감싸 공기 접촉 최소화!",
+    "유제품": "🥛 0~5℃ 냉장 보관.\n👉 개봉 후 빨리 섭취, 치즈는 밀폐용기에 보관!",
+    "곡류": "🌾 서늘하고 건조한 곳에 보관.\n👉 장기 보관 시 벌레 방지를 위해 밀폐용기 + 냉장/냉동!",
+    "과일": "🍎 일부 과일은 실온(바나나, 감), 일부는 냉장(사과, 배) 보관.\n👉 냉장 시 신문지나 랩으로 싸서 수분 증발 방지!",
+    "채소": "🥬 대부분 냉장 보관, 뿌리채소는 서늘한 실온 보관 가능.\n👉 물기 제거 후 지퍼백이나 밀폐용기에!"
 }
 
-# -----------------------------
-# UI: 카테고리 선택 → 정보 표시
-# -----------------------------
-category = st.selectbox(
-    "📂 카테고리를 선택하세요",
-    list(CATEGORY_STORAGE.keys())
-)
+# 페이지: 카테고리 선택
+if st.session_state.page == "select":
+    st.title("🍱 음식 보관 방법 추천")
+    st.write("아래에서 카테고리를 선택하세요!")
 
-if category:
-    st.subheader(f"🔎 {category} 보관 방법")
-    info = CATEGORY_STORAGE[category]
-    st.write(f"**보관 장소:** {info['보관 장소']}")
-    st.write(f"**권장 기간:** {info['권장 기간']}")
-    st.write("**주의사항:**")
-    for tip in info["주의사항"]:
-        st.write(f"- {tip}")
+    categories = list(storage_tips.keys())
+    choice = st.selectbox("카테고리 선택", categories)
 
+    if st.button("확인"):
+        st.session_state.choice = choice
+        st.session_state.page = "result"
+        st.experimental_rerun()
+
+# 페이지: 결과 출력
+elif st.session_state.page == "result":
+    choice = st.session_state.choice
+    st.title(f"📦 {choice} 보관 방법")
+    st.info(storage_tips[choice])
+
+    if st.button("⬅️ 다시 선택하기"):
+        st.session_state.page = "select"
+        st.experimental_rerun()
