@@ -51,6 +51,8 @@ elif st.session_state.page == "result":
         st.rerun()
 
 
+import random
+
 # 카테고리별 이모지 매핑
 emoji_map = {
     "수산물": "❄️",
@@ -64,22 +66,41 @@ emoji_map = {
 # 선택된 카테고리에 맞는 이모지
 emoji = emoji_map[choice]
 
-# CSS 애니메이션으로 위에서 떨어지게 만들기
+# 랜덤 drop 효과 CSS 만들기
+styles = ""
+emoji_divs = ""
+for i in range(5):
+    delay = round(i * 0.3, 2)  # 순차적 딜레이
+    start_y = random.randint(150, 300)  # 시작 높이 (px)
+    duration = round(random.uniform(0.7, 1.5), 2)  # 애니메이션 속도
+    styles += f"""
+    .emoji:nth-child({i+1}) {{
+        animation: drop-{i} {duration}s ease forwards;
+        animation-delay: {delay}s;
+    }}
+    @keyframes drop-{i} {{
+        0%   {{ transform: translateY(-{start_y}px); opacity: 0; }}
+        100% {{ transform: translateY(0); opacity: 1; }}
+    }}
+    """
+    emoji_divs += f"<div class='emoji'>{emoji}</div>"
+
+# 최종 마크다운 출력
 st.markdown(
     f"""
     <style>
-    @keyframes drop {{
-        0%   {{ transform: translateY(-200px); opacity: 0; }}
-        100% {{ transform: translateY(0); opacity: 1; }}
+    .emoji-container {{
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        font-size: 70px;
+        margin-bottom: 20px;
     }}
-    .drop-emoji {{
-        font-size: 80px;
-        text-align: center;
-        animation: drop 1s ease forwards;
-    }}
+    {styles}
     </style>
-    <div class="drop-emoji">{emoji}</div>
+    <div class="emoji-container">
+        {emoji_divs}
+    </div>
     """,
     unsafe_allow_html=True
 )
-
