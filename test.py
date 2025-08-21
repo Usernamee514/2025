@@ -20,7 +20,7 @@ storage_tips = {
     "채소": ["🥬 대부분 냉장 보관, 뿌리채소는 서늘한 실온 보관 가능.", "👉 물기 제거 후 지퍼백이나 밀폐용기에!"]
 }
 
-# 세션 상태 초기화
+# 세션 초기화
 if "page" not in st.session_state:
     st.session_state.page = "select"
 if "choice" not in st.session_state:
@@ -32,15 +32,15 @@ if st.session_state.page == "select":
     choice = st.selectbox("카테고리를 선택하세요", list(emoji_map.keys()))
     if st.button("보관방법 보기"):
         st.session_state.choice = choice
-        st.session_state.page = "result"  # 화면 전환
-        # rerun 없이 바로 분기
+        st.session_state.page = "result"
+        # rerun 제거! 화면 전환은 if/else로 처리
 
 # 결과 화면
 if st.session_state.page == "result":
     choice = st.session_state.choice
     emoji = emoji_map[choice]
 
-    # 5개 이모지 순서대로 떨어지는 애니메이션
+    # 이모지 5개 순서대로 떨어지는 애니메이션
     styles = ""
     emoji_divs = ""
     for i in range(5):
@@ -86,4 +86,5 @@ if st.session_state.page == "result":
     # 다시 선택 화면으로 돌아가기 버튼
     if st.button("다시 선택"):
         st.session_state.page = "select"
-        st.experimental_rerun()
+        st.session_state.choice = None
+        # rerun 제거! if/else 구조가 이미 화면 전환 처리
