@@ -49,3 +49,19 @@ elif st.session_state.page == "result":
     if st.button("⬅️ 다시 선택하기"):
         st.session_state.page = "select"
         st.rerun()
+
+#이모지튀어나오게
+import time
+
+# 카테고리 순서에 맞춘 이모지 리스트
+emojis = ["❄️", "🥩", "🥛", "🌾", "🍎", "🥬"]
+
+# 이모지 출력용 placeholder
+placeholder = st.empty()
+
+for i in range(len(emojis)):
+    placeholder.markdown(
+        f"<h1 style='text-align:center;'>{' '.join(emojis[:i+1])}</h1>",
+        unsafe_allow_html=True
+    )
+    time.sleep(0.4)  # 속도 조절 가능
