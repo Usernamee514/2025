@@ -50,18 +50,36 @@ elif st.session_state.page == "result":
         st.session_state.page = "select"
         st.rerun()
 
-#이모지튀어나오게
-import time
 
-# 카테고리 순서에 맞춘 이모지 리스트
-emojis = ["❄️", "🥩", "🥛", "🌾", "🍎", "🥬"]
+# 카테고리별 이모지 매핑
+emoji_map = {
+    "수산물": "❄️",
+    "육류": "🥩",
+    "유제품": "🥛",
+    "곡류": "🌾",
+    "과일": "🍎",
+    "채소": "🥬"
+}
 
-# 이모지 출력용 placeholder
-placeholder = st.empty()
+# 선택된 카테고리에 맞는 이모지
+emoji = emoji_map[choice]
 
-for i in range(len(emojis)):
-    placeholder.markdown(
-        f"<h1 style='text-align:center;'>{' '.join(emojis[:i+1])}</h1>",
-        unsafe_allow_html=True
-    )
-    time.sleep(0.4)  # 속도 조절 가능
+# CSS 애니메이션으로 위에서 떨어지게 만들기
+st.markdown(
+    f"""
+    <style>
+    @keyframes drop {{
+        0%   {{ transform: translateY(-200px); opacity: 0; }}
+        100% {{ transform: translateY(0); opacity: 1; }}
+    }}
+    .drop-emoji {{
+        font-size: 80px;
+        text-align: center;
+        animation: drop 1s ease forwards;
+    }}
+    </style>
+    <div class="drop-emoji">{emoji}</div>
+    """,
+    unsafe_allow_html=True
+)
+
