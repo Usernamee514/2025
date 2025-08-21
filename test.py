@@ -105,3 +105,60 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+if st.session_state.page == "select":
+    # 카테고리 선택 화면 (이모지 없음)
+    choice = st.selectbox("카테고리를 선택하세요", list(emoji_map.keys()))
+    if st.button("보관방법 보기"):
+        st.session_state.choice = choice
+        st.session_state.page = "result"
+        st.experimental_rerun()
+
+elif st.session_state.page == "result":
+    choice = st.session_state.choice
+    emoji = emoji_map[choice]
+
+    # 이모지 애니메이션 (결과 화면에서만 표시)
+    import random
+    styles = ""
+    emoji_divs = ""
+    for i in range(5):
+        delay = round(i * 0.3, 2)
+        start_y = random.randint(150, 300)
+        duration = round(random.uniform(0.7, 1.5), 2)
+        styles += f"""
+        .emoji:nth-child({i+1}) {{
+            opacity: 0;
+            animation: drop-{i} {duration}s ease forwards;
+            animation-delay: {delay}s;
+        }}
+        @keyframes drop-{i} {{
+            0%   {{ transform: translateY(-{start_y}px); opacity: 0; }}
+            100% {{ transform: translateY(0); opacity: 1; }}
+        }}
+        """
+        emoji_divs += f"<div class='emoji'>{emoji}</div>"
+
+    st.markdown(
+        f"""
+        <style>
+        .emoji-container {{
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 70px;
+            margin-bottom: 20px;
+        }}
+        {styles}
+        </style>
+        <div class="emoji-container">
+            {emoji_divs}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # 여기서 보관방법 텍스트 출력
+    for tip in storage_tips[choice]:
+        st.info(tip)
+
