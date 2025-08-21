@@ -51,61 +51,6 @@ elif st.session_state.page == "result":
         st.rerun()
 
 
-import random
-
-# 카테고리별 이모지 매핑
-emoji_map = {
-    "수산물": "❄️",
-    "육류": "🥩",
-    "유제품": "🥛",
-    "곡류": "🌾",
-    "과일": "🍎",
-    "채소": "🥬"
-}
-
-# 선택된 카테고리에 맞는 이모지
-emoji = emoji_map[choice]
-
-# 랜덤 drop 효과 CSS 만들기
-styles = ""
-emoji_divs = ""
-for i in range(5):
-    delay = round(i * 0.3, 2)  # 순차적 딜레이
-    start_y = random.randint(150, 300)  # 시작 높이 (px)
-    duration = round(random.uniform(0.7, 1.5), 2)  # 애니메이션 속도
-    styles += f"""
-    .emoji:nth-child({i+1}) {{
-        opacity: 0;  /* 초기에는 완전히 안 보이게 */
-        animation: drop-{i} {duration}s ease forwards;
-        animation-delay: {delay}s;
-    }}
-    @keyframes drop-{i} {{
-        0%   {{ transform: translateY(-{start_y}px); opacity: 0; }}
-        100% {{ transform: translateY(0); opacity: 1; }}
-    }}
-    """
-    emoji_divs += f"<div class='emoji'>{emoji}</div>"
-
-# 최종 마크다운 출력
-st.markdown(
-    f"""
-    <style>
-    .emoji-container {{
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        font-size: 70px;
-        margin-bottom: 20px;
-    }}
-    {styles}
-    </style>
-    <div class="emoji-container">
-        {emoji_divs}
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
 if st.session_state.page == "select":
     # 카테고리 선택 화면 (이모지 없음)
     choice = st.selectbox("카테고리를 선택하세요", list(emoji_map.keys()))
