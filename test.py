@@ -35,6 +35,18 @@ if st.session_state.page == "select":
         st.session_state.page = "result"
         # rerun 제거! 화면 전환은 if/else로 처리
 
+# --------------------------
+# 카테고리 선택 후 결과 화면으로 넘어가기
+# --------------------------
+
+choice = st.selectbox("카테고리를 선택하세요", list(emoji_map.keys()))
+
+if st.button("보관방법 보기"):
+    st.session_state.choice = choice       # 선택된 카테고리 저장
+    st.session_state.page = "result"        # 페이지 상태를 결과 화면으로 변경
+    # st.experimental_rerun() 없이 if/else 구조로 화면 전환 가능
+
+
 # 결과 화면
 if st.session_state.page == "result":
     choice = st.session_state.choice
