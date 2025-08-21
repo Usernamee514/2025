@@ -29,7 +29,7 @@ if st.session_state.page == "select":
     if st.button("확인"):
         st.session_state.choice = choice
         st.session_state.page = "result"
-        st.experimental_rerun()
+        st.rerun()  # ✅ 수정됨
 
 # 페이지: 결과 출력
 elif st.session_state.page == "result":
@@ -39,4 +39,5 @@ elif st.session_state.page == "result":
 
     if st.button("⬅️ 다시 선택하기"):
         st.session_state.page = "select"
-        st.experimental_rerun()
+        st.rerun()  # ✅ 수정됨
+
