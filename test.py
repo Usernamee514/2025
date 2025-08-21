@@ -37,6 +37,9 @@ elif st.session_state.page == "result":
     st.title(f"📦 {choice} 보관 방법")
     st.info(storage_tips[choice])
 
+    for tip in storage_tips[choice]:
+        st.info(tip)
+
     if st.button("⬅️ 다시 선택하기"):
         st.session_state.page = "select"
         st.rerun()  # ✅ 수정됨
