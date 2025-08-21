@@ -35,12 +35,12 @@ if st.session_state.page == "select":
 elif st.session_state.page == "result":
     choice = st.session_state.choice
     st.title(f"📦 {choice} 보관 방법")
-    st.info(storage_tips[choice])
 
-    for tip in storage_tips[choice]:
-        st.info(tip)
+    # 문장들을 줄바꿈 포함해 하나의 문자열로 합치기
+    tips_text = "\n".join(storage_tips[choice])
+    st.info(tips_text)
 
     if st.button("⬅️ 다시 선택하기"):
         st.session_state.page = "select"
-        st.rerun()  # ✅ 수정됨
+        st.rerun()
 
