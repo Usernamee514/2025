@@ -36,11 +36,16 @@ elif st.session_state.page == "result":
     choice = st.session_state.choice
     st.title(f"📦 {choice} 보관 방법")
 
-    # 줄바꿈된 문자열 그대로 출력
-    st.info(storage_tips[choice])
+    # st.markdown을 이용해서 줄바꿈 보장
+    st.markdown(
+        f"""
+        <div style="background-color:#f0f2f6; padding:15px; border-radius:10px;">
+        {storage_tips[choice].replace("\n", "<br>")}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     if st.button("⬅️ 다시 선택하기"):
         st.session_state.page = "select"
         st.rerun()
-
-
