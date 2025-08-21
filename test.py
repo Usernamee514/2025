@@ -49,9 +49,10 @@ if st.session_state.page == "select":
         st.session_state.page = "result"
 
 # --------------------------
-# 결과 화면 (선택 후에만 나타남)
+# 결과 화면
 # --------------------------
-if st.session_state.page == "result":
+# ★ 선택 화면에서는 절대로 실행되지 않도록 조건 명확히
+elif st.session_state.page == "result":
     choice = st.session_state.choice
     emoji = emoji_map[choice]
 
@@ -102,4 +103,3 @@ if st.session_state.page == "result":
     if st.button("다시 선택"):
         st.session_state.page = "select"
         st.session_state.choice = None
-
