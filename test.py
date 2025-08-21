@@ -49,7 +49,7 @@ if st.session_state.page == "select":
         st.session_state.page = "result"
 
 # --------------------------
-# 결과 화면
+# 결과 화면 (선택 후에만 나타남)
 # --------------------------
 if st.session_state.page == "result":
     choice = st.session_state.choice
@@ -59,9 +59,9 @@ if st.session_state.page == "result":
     styles = ""
     emoji_divs = ""
     for i in range(5):
-        delay = round(i * 0.3, 2)             # 순차적 딜레이
-        start_y = random.randint(150, 250)    # 시작 높이
-        duration = round(random.uniform(0.7, 1.2), 2)  # 애니메이션 속도
+        delay = round(i * 0.3, 2)
+        start_y = random.randint(150, 250)
+        duration = round(random.uniform(0.7, 1.2), 2)
         styles += f"""
         .emoji:nth-child({i+1}) {{
             opacity: 0;
