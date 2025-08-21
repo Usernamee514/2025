@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-# 1️⃣ 전역 변수 선언
+# 전역 변수 선언
 emoji_map = {
     "수산물": "❄️",
     "육류": "🥩",
@@ -20,33 +20,34 @@ storage_tips = {
     "채소": ["🥬 대부분 냉장 보관, 뿌리채소는 서늘한 실온 보관 가능.", "👉 물기 제거 후 지퍼백이나 밀폐용기에!"]
 }
 
-# 2️⃣ 세션 상태 초기화
+# 세션 상태 초기화
 if "page" not in st.session_state:
     st.session_state.page = "select"
 if "choice" not in st.session_state:
     st.session_state.choice = None
 
-# 3️⃣ 선택 화면 (이모지 없음)
+# 선택 화면
 if st.session_state.page == "select":
     st.title("🍱 음식 보관 방법 추천")
     choice = st.selectbox("카테고리를 선택하세요", list(emoji_map.keys()))
     if st.button("보관방법 보기"):
         st.session_state.choice = choice
         st.session_state.page = "result"
-        st.experimental_rerun()
+        # rerun 없이 화면 분기로 처리
+        # st.experimental_rerun() 제거
 
-# 4️⃣ 결과 화면 (선택된 카테고리 이모지 5개 순서대로 떨어짐)
-elif st.session_state.page == "result":
+# 결과 화면
+if st.session_state.page == "result":
     choice = st.session_state.choice
     emoji = emoji_map[choice]
 
-    # CSS 애니메이션 생성
+    # 이모지 5개 순서대로 떨어지는 애니메이션
     styles = ""
     emoji_divs = ""
     for i in range(5):
-        delay = round(i * 0.3, 2)  # 순차적 딜레이
-        start_y = random.randint(150, 250)  # 시작 높이 (px)
-        duration = round(random.uniform(0.7, 1.2), 2)  # 애니메이션 속도
+        delay = round(i * 0.3, 2)
+        start_y = random.randint(150, 250)
+        duration = round(random.uniform(0.7, 1.2), 2)
         styles += f"""
         .emoji:nth-child({i+1}) {{
             opacity: 0;
